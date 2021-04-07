@@ -36,7 +36,7 @@ export default class Auth extends React.Component<IProps, IState> {
         this.toggleSignup = this.toggleSignup.bind(this);
     }
 
-    //toggle for login and signup when button is clicked to display modal. also the button display needs to be a ternary checking if signup/login is false, if not, display logout component that i have not built yet.
+
     toggleLogin() {
         this.setState({
             login: !this.state.login

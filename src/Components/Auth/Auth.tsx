@@ -57,7 +57,6 @@ export default class Auth extends React.Component<IProps, IState> {
     }
 
     render(){
-        // const views = this.state.login === true ? <Login sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.login}/> : <Register sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken}/>
         return (
             <div>
                 {

@@ -8,23 +8,29 @@ import {
     BrowserRouter as Router,
   } from 'react-router-dom';
 import Home from '../Home/Home';
-// import Auth from '../Auth';
+import Auth from '../Auth/Auth';
+import {Grid} from '@material-ui/core';
 
-type Props = {
-
+interface IProps {
+    sessionToken: string;
+    updateToken(newToken: string) : string;
+    clearToken() : void;
 }
 
-export default class Navbar extends React.Component {
+export default class Navbar extends React.Component<IProps> {
     render() {
             return(
             <div className='navbar'>
+                <br/>
                 <Router>
-                    <div className='navbar-styling'> {/* make a styles.js */}
-                        <ul>
-                            <li><Link to='/home'>LOGO</Link></li>
-                            {/* <li><Auth /></li> */}
-                        </ul>
-                    </div>
+                    <Grid container spacing={3}>
+                        <Grid item xs={6} alignItems="flex-start">  
+                            <Link to='/home'>LOGO</Link>
+                        </Grid>
+                        <Grid item xs={6}>      
+                            <Auth baseURL={'https://ck-teachers-aid-server.herokuapp.com'} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken}/>
+                        </Grid>
+                    </Grid>
                     <div>
                         <Switch>
                             <Route exact path='/home'><Home /></Route>

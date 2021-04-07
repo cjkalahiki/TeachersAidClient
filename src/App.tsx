@@ -8,13 +8,60 @@ import {
 } from 'react-router-dom';
 import Navbar from './Components/NavBar/Navbar';
 
-function App() {
-  return (
-    <div className="App">
-      <Navbar />
-      {/* <Footer /> */}
-    </div>
-  );
+interface IState {
+  sessionToken: string;
 }
 
-export default App;
+export default class App extends React.Component<{},IState> {
+  
+  constructor(props: {}){
+    super(props);
+    this.state = {
+      sessionToken: ''
+    }
+    this.updateToken = this.updateToken.bind(this);
+    this.clearToken = this.clearToken.bind(this);
+  }
+  
+  //sessionToken logic here; need to pass down to Navbar and then Auth
+
+  componentDidUpdate() {
+    if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined){
+      let storedToken : string | null = localStorage.getItem('token');
+      if (storedToken !== null && this.state.sessionToken !== storedToken){
+        this.setState({
+          sessionToken: storedToken
+        })
+      }
+    }
+  };
+
+  
+  updateToken = (newToken : string): string => {
+    localStorage.setItem('token', newToken);
+    this.setState({
+      sessionToken: newToken
+    })
+    return(
+      newToken
+    )
+  }
+
+  clearToken = () => {
+    localStorage.clear();
+    console.log('local storage', localStorage.getItem('token'));
+    this.setState({
+      sessionToken: ''
+    })
+    console.log('after clear token:', this.state.sessionToken);
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Navbar sessionToken={this.state.sessionToken} updateToken={this.updateToken} clearToken={this.clearToken}/>
+        {/* <Footer /> */}
+      </div>
+    );
+  }
+}

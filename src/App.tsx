@@ -8,8 +8,10 @@ import {
 } from 'react-router-dom';
 import Navbar from './Components/NavBar/Navbar';
 
+
 interface IState {
   sessionToken: string;
+  role: string;
 }
 
 export default class App extends React.Component<{},IState> {
@@ -17,7 +19,8 @@ export default class App extends React.Component<{},IState> {
   constructor(props: {}){
     super(props);
     this.state = {
-      sessionToken: ''
+      sessionToken: '',
+      role: ''
     }
     this.updateToken = this.updateToken.bind(this);
     this.clearToken = this.clearToken.bind(this);
@@ -47,6 +50,13 @@ export default class App extends React.Component<{},IState> {
     )
   }
 
+  updateRole = (newRole : string): string => {
+    this.setState({
+      role: newRole
+    })
+    return (newRole);
+  }
+
   clearToken = () => {
     localStorage.clear();
     console.log('local storage', localStorage.getItem('token'));
@@ -59,7 +69,7 @@ export default class App extends React.Component<{},IState> {
   render() {
     return (
       <div className="App">
-        <Navbar sessionToken={this.state.sessionToken} updateToken={this.updateToken} clearToken={this.clearToken}/>
+        <Navbar sessionToken={this.state.sessionToken} updateToken={this.updateToken} clearToken={this.clearToken} updateRole={this.updateRole} role={this.state.role}/>
         {/* <Footer /> */}
       </div>
     );

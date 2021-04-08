@@ -5,6 +5,8 @@ type Props = {
 
 }
 
+//use a {Container} from material ui for the blue background
+
 export default class Home extends React.Component {
 
     render() {

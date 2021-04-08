@@ -18,6 +18,7 @@ interface IProps {
     sessionToken: string;
     updateToken(newToken: string) : string;
     clearToken() : void;
+    updateRole(newRole : string) : string;
 }
 
 interface IState {
@@ -62,12 +63,12 @@ export default class Auth extends React.Component<IProps, IState> {
                 {
                     this.state.login === false
                         ? null
-                        : <Login sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.login}/>
+                        : <Login sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.login} updateRole={this.props.updateRole}/>
                 }
                 { /* if user has not clicked on button, modal will not display */
                     this.state.signUp === false 
                         ? null 
-                        : <Register sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.signUp}/>
+                        : <Register sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.signUp} updateRole={this.props.updateRole}/>
                 }
                 {
                     this.props.sessionToken === ''

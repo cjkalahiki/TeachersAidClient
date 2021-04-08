@@ -6,6 +6,7 @@ import {
 interface IProps {
     sessionToken: string;
     baseURL: string;
+    fetchCampaigns(): void;
 }
 
 interface IState {
@@ -57,6 +58,7 @@ export default class CampaignsCreate extends React.Component<IProps, IState>{
                     description: '',
                     endDate: ''
                 })
+                this.props.fetchCampaigns();
             })
     }
 
@@ -64,6 +66,10 @@ export default class CampaignsCreate extends React.Component<IProps, IState>{
         e.preventDefault();
         this.campaignsFetch(e);
     }
+
+    // componentDidUpdate(prevProps: IProps, prevState: IState){
+    //     if (prevProps)
+    // }
 
     render(){
         return(

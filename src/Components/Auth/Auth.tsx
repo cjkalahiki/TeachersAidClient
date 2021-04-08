@@ -73,12 +73,12 @@ export default class Auth extends React.Component<IProps, IState> {
                 }
                 {
                     this.props.sessionToken === ''
-                        ? <Button variant='contained' style={{marginRight: '2em', backgroundColor: '#E24E42', color:'white', borderRadius: '25px'}} onClick={this.toggleLogin}>Log in</Button>
+                        ? <Button variant='contained' style={{marginRight: '2em', backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.toggleLogin}>Log in</Button>
                         : null
                 }
                 {
                     this.props.sessionToken === ''
-                        ? <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px'}} onClick={this.toggleSignup}>Sign up</Button>
+                        ? <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.toggleSignup}>Sign up</Button>
                         : null
                 }
                 {

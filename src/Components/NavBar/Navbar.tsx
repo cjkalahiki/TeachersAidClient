@@ -9,8 +9,9 @@ import {
   } from 'react-router-dom';
 import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
-import {Grid} from '@material-ui/core';
+import {Grid, Button} from '@material-ui/core';
 import CampaignsIndex from '../Displays/Teacher/CampaignsIndex';
+import logo from '../../Assets/teachersaid.png';
 
 interface IProps {
     sessionToken: string;
@@ -26,23 +27,29 @@ export default class Navbar extends React.Component<IProps> {
             <div className='navbar'>
                 <br/>
                 <Router>
-                    <Grid container spacing={3}>
-                        <Grid item xs={6} alignItems="flex-start">  
-                            <Link to='/' style={{marginRight: '2em'}}>LOGO</Link>
+                    <Grid container>
+                        <Grid item xs={3} alignItems="flex-start">  
+                            <Link to='/' style={{marginRight: '2em'}}><img src={logo} alt='logo' style={{width: '18vw', marginLeft: '5em'}}/></Link>
                         </Grid>
-                        <Grid item xs={6}>      
-                            <Auth baseURL={'https://ck-teachers-aid-server.herokuapp.com'} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken} updateRole={this.props.updateRole}/>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={3}>
                         <Grid item xs={6}>
-                            <Link to='/campaigns'>Your Campaigns</Link>
+                        {
+                            this.props.role === 'teacher'
+                                ? <Grid item xs={8}><Link to='/campaigns'><Button style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Your Campaigns</Button></Link></Grid>
+                                : null
+                        }
+                        </Grid>
+                        <Grid item xs={3} style={{marginBottom: '4em'}} justify='flex-end'>      
+                            <Auth baseURL={'https://ck-teachers-aid-server.herokuapp.com'} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken} updateRole={this.props.updateRole}/>
                         </Grid>
                     </Grid>
                     <div>
                         <Switch>
                             <Route exact path='/'><Home /></Route>
-                            <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
+                            {
+                                this.props.role === 'teacher'
+                                    ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
+                                    : null
+                            }
                         </Switch>
                     </div>
                 </Router>

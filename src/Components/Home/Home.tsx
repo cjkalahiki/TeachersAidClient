@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid} from '@material-ui/core';
+import {Grid, Container} from '@material-ui/core';
 
 type Props = {
 
@@ -11,10 +11,16 @@ export default class Home extends React.Component {
 
     render() {
             return(
-            <div className='home'>
-                <Grid>
-                    <h2>Home</h2>
-                </Grid>
+            <div>
+                <div style={{ backgroundColor: '#B0DCDE', height: '30vh' }}>
+                    <Container >
+                        <Grid container spacing={3}>
+                            <Grid item xs={3}>
+                                <h3>Teachers' Aid</h3>    
+                            </Grid>        
+                        </Grid> 
+                    </Container>
+                </div>
                 {/* <SearchBar /> */}
             </div>
         )

@@ -13,8 +13,9 @@ import {
 interface IProps {
     baseURL: string;
     sessionToken: string;
-    updateToken(newToken: string) : string;
+    updateToken(newToken: string) : string; 
     clearToken() : void;
+    updateRole(newRole: string) : string;
     open: boolean;
 }
 
@@ -73,6 +74,7 @@ export default class Login extends React.Component<IProps, IState> {
                     console.log(data)
                     alert(data.message);
                     this.props.updateToken(data.sessionToken);
+                    this.props.updateRole(data.user.role);
                     this.handleOpen();
                 })
         }
@@ -99,7 +101,7 @@ export default class Login extends React.Component<IProps, IState> {
                     </FormGroup>
                     <br/>
                     <FormGroup>
-                        <TextField id='outlined-basic' label='password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler}>Password: </TextField>
+                        <TextField id='outlined-basic' label='password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler} type="password">Password: </TextField>
                     </FormGroup>
                     <br/>
                     <Button variant='contained' style={{marginLeft: '3.5em'}} onClick={this.handleSubmit}>Log in</Button>

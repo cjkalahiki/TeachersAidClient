@@ -125,7 +125,7 @@ export default class Register extends React.Component<IProps, IState> {
         return (
             <Dialog open={this.state.open} onClose={this.handleClose}>
                 <DialogTitle style={{textAlign: 'center'}}>Sign up</DialogTitle>
-                <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '40vw', textAlign: 'center'}}>
+                <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup row>
                         <DialogTitle>Are you a teacher?</DialogTitle>
                         <FormControlLabel control={<Checkbox checked={this.state.teacher} onChange={this.checkbox} name='teacher' />} label='Yes'/>
@@ -146,7 +146,7 @@ export default class Register extends React.Component<IProps, IState> {
                         <TextField id='outlined-basic' label='Password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler} required type="password">Password: </TextField>
                     </FormGroup>
                     <br/>
-                    <Button variant='contained' onClick={this.handleSubmit}>Sign up</Button>
+                    <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Sign up</Button>
                 </form>
             </Dialog>
         )

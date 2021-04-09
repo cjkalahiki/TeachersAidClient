@@ -8,6 +8,7 @@ import teacher from '../../Assets/teacher.jpg';
 
 interface IProps {
     sessionToken: string;
+    role: string;
 }
 
 //use a {Container} from material ui for the blue background
@@ -36,7 +37,9 @@ export default class Home extends React.Component<IProps> {
                         </Grid> 
                     </Container>
                 </div>
-                <SearchBar sessionToken={this.props.sessionToken}/>
+                <SearchBar sessionToken={this.props.sessionToken} role={this.props.role}/>
+                <br/>
+                <br/>
             </div>
         )
     }

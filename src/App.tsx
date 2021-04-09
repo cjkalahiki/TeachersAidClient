@@ -7,6 +7,7 @@ import {
   Switch
 } from 'react-router-dom';
 import Navbar from './Components/NavBar/Navbar';
+import Footer from './Components/Footer';
 
 interface IProps {
 
@@ -74,7 +75,7 @@ export default class App extends React.Component<IProps,IState> {
     return (
       <div className="App">
         <Navbar sessionToken={this.state.sessionToken} updateToken={this.updateToken} clearToken={this.clearToken} updateRole={this.updateRole} role={this.state.role}/>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }

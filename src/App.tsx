@@ -8,15 +8,18 @@ import {
 } from 'react-router-dom';
 import Navbar from './Components/NavBar/Navbar';
 
+interface IProps {
+
+}
 
 interface IState {
   sessionToken: string;
   role: string;
 }
 
-export default class App extends React.Component<{},IState> {
+export default class App extends React.Component<IProps,IState> {
   
-  constructor(props: {}){
+  constructor(props: IProps){
     super(props);
     this.state = {
       sessionToken: '',
@@ -28,7 +31,7 @@ export default class App extends React.Component<{},IState> {
   
   //sessionToken logic here; need to pass down to Navbar and then Auth
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
     if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined){
       let storedToken : string | null = localStorage.getItem('token');
       if (storedToken !== null && this.state.sessionToken !== storedToken){
@@ -36,7 +39,7 @@ export default class App extends React.Component<{},IState> {
           sessionToken: storedToken
         })
       }
-    }
+    } 
   };
 
   
@@ -61,7 +64,8 @@ export default class App extends React.Component<{},IState> {
     localStorage.clear();
     console.log('local storage', localStorage.getItem('token'));
     this.setState({
-      sessionToken: ''
+      sessionToken: '',
+      role: ''
     })
     console.log('after clear token:', this.state.sessionToken);
   }

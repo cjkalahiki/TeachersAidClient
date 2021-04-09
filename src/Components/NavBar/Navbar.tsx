@@ -22,6 +22,13 @@ interface IProps {
 }
 
 export default class Navbar extends React.Component<IProps> {
+    
+    componentDidUpdate(prevProps: IProps){
+        if(prevProps.role !== this.props.role){
+            this.forceUpdate();
+        }
+    }
+    
     render() {
             return(
             <div className='navbar'>
@@ -44,7 +51,7 @@ export default class Navbar extends React.Component<IProps> {
                     </Grid>
                     <div>
                         <Switch>
-                            <Route exact path='/'><Home /></Route>
+                            <Route exact path='/'><Home sessionToken={this.props.sessionToken}/></Route>
                             {
                                 this.props.role === 'teacher'
                                     ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>

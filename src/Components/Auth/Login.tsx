@@ -94,17 +94,16 @@ export default class Login extends React.Component<IProps, IState> {
     render(){
         return (
             <Dialog open={this.state.open} onClose={this.handleClose}>
-                <DialogTitle>Login</DialogTitle>
-                <form onSubmit={this.handleSubmit} style={{padding: "2em"}}>
+                <DialogTitle style={{textAlign: 'center'}}>Login</DialogTitle>
+                <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup>
                         <TextField id='outlined-basic' label='username' variant='filled' value={this.state.username} name='username' onChange={this.inputCompiler}>Username: </TextField>
                     </FormGroup>
-                    <br/>
                     <FormGroup>
                         <TextField id='outlined-basic' label='password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler} type="password">Password: </TextField>
                     </FormGroup>
                     <br/>
-                    <Button variant='contained' style={{marginLeft: '3.5em'}} onClick={this.handleSubmit}>Log in</Button>
+                    <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Log in</Button>
                 </form>
             </Dialog>
         )

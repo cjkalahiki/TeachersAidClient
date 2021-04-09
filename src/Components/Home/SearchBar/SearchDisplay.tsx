@@ -5,10 +5,12 @@ import {
     TableCell, TableBody,
     Button, TextField, Grid
 } from '@material-ui/core';
+import TransactionCreate from './TransactionCreate';
 
 interface IProps {
     campaigns: ICampaign[];
     role: string;
+    sessionToken: string;
 }
 
 interface ICampaign {
@@ -18,27 +20,25 @@ interface ICampaign {
     description: string;
     endDate: string;
     id: number;
+    user: IUser;
+}
+
+interface IUser {
+    username: string
 }
 
 const SearchDisplay =  (props: IProps) => {
+    /*
+        view campaign button will pull up ViewCampaign Modal
+            inside this modal, a check for role === 'donor' to connect to /transactions/transaction to make the transaction
+    */
     const [searchTerm, setSearchTerm] = useState('');
+    const [transactionActive, setTransactionActive] = useState(false);
 
-
-    // const campaignFilter = () => {
-    //     return (
-    //         props.campaigns.filter((campaign): ICampaign => {
-    //             campaign.includes(searchTerm.toLocaleLowerCase())
-    //         })
-    //     )
-    // }
+    //TODO: to pass down the 
 
     const campaignMapper = () => {
-        // console.log(props.campaigns);
-        // return(
-        //     <TableRow>
-        //         <TableCell>test</TableCell>
-        //     </TableRow>
-        // )
+        console.log(props.campaigns);
         if (props.campaigns !== []) {
             return props.campaigns.filter((campaign: ICampaign) => campaign.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())).map((campaign: ICampaign, index: number) => {
                 return(
@@ -47,13 +47,29 @@ const SearchDisplay =  (props: IProps) => {
                         <TableCell>${campaign.amount}</TableCell>
                         <TableCell>{campaign.description}</TableCell>
                         <TableCell>{campaign.endDate}</TableCell>
+                        <TableCell>{campaign.user.username}</TableCell>
                         <TableCell>                       
-                        <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}} >View Campaign</Button>
+                        <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}} onClick={transactionOn}>Donate</Button>
                         </TableCell>
+                        {
+                            /* bug is that this only grabs the last campaign's id instead of the targeted one :/ */
+                            transactionActive 
+                                ? <TransactionCreate sessionToken={props.sessionToken} transactionOff={transactionOff} campaignID={campaign.id}/>
+                                : null
+                        }
                     </TableRow>
                 )
             })
         }
+    }
+
+    const transactionOn = () => {
+        console.log('clicked')
+        setTransactionActive(true);
+    }
+    
+    const transactionOff = () => {
+        setTransactionActive(false);
     }
 
     return(
@@ -63,9 +79,9 @@ const SearchDisplay =  (props: IProps) => {
             </div>
             <br/>
             <br/>
-            <Grid container spacing={3}>
-                <Grid item xs={2}></Grid>
-                <Grid item xs={8}>
+            <Grid container spacing={2}>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10}>
                     <TableContainer>
                         <Table>
                             <TableHead>
@@ -73,6 +89,7 @@ const SearchDisplay =  (props: IProps) => {
                                 <TableCell>Amount Needed</TableCell>
                                 <TableCell>Description</TableCell>
                                 <TableCell>End Date</TableCell>
+                                <TableCell>Teacher</TableCell>
                             </TableHead>
                             <TableBody>
                                 {campaignMapper()}

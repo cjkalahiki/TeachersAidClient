@@ -21,10 +21,14 @@ interface ICampaign {
     description: string;
     endDate: string;
     id: number;
+    user: IUser;
+}
+
+interface IUser {
+    username: string
 }
 
 export default class SearchBar extends React.Component<IProps, IState> {
-    /* Need to figure out how we are  going to build the mapper in the Table. By building an interface for the campaign objects, we can capture these individually to send down as props to be displayed. the fetch logic comes here.*/
     constructor(props: IProps){
         super(props);
 
@@ -65,7 +69,7 @@ export default class SearchBar extends React.Component<IProps, IState> {
                <Grid container>
                    <Grid item xs={12}>
                         <h1>Search for a campaign!</h1>
-                        <SearchDisplay campaigns={this.state.campaigns} role={this.props.role}/>
+                        <SearchDisplay campaigns={this.state.campaigns} role={this.props.role} sessionToken={this.props.sessionToken}/>
                    </Grid>
                </Grid>
             </div>

@@ -11,6 +11,7 @@ import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
 import {Grid, Button} from '@material-ui/core';
 import CampaignsIndex from '../Displays/Teacher/CampaignsIndex';
+import TransactionsIndex from '../Displays/Donor/TransactionsIndex';
 import logo from '../../Assets/teachersaid.png';
 
 interface IProps {
@@ -44,6 +45,11 @@ export default class Navbar extends React.Component<IProps> {
                                 ? <Grid item xs={8}><Link to='/campaigns'><Button style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Your Campaigns</Button></Link></Grid>
                                 : null
                         }
+                        {
+                            this.props.role === 'donor'
+                                ? <Grid item xs={8}><Link to='/transactions'><Button style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Your Transactions</Button></Link></Grid>
+                                : null
+                        }
                         </Grid>
                         <Grid item xs={3} style={{marginBottom: '4em'}} justify='flex-end'>      
                             <Auth baseURL={'https://ck-teachers-aid-server.herokuapp.com'} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken} updateRole={this.props.updateRole}/>
@@ -55,6 +61,11 @@ export default class Navbar extends React.Component<IProps> {
                             {
                                 this.props.role === 'teacher'
                                     ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
+                                    : null
+                            }
+                            {
+                                this.props.role === 'donor'
+                                    ?  <Route exact path='/transactions'><TransactionsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
                                     : null
                             }
                         </Switch>

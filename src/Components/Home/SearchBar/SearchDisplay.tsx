@@ -48,8 +48,12 @@ const SearchDisplay =  (props: IProps) => {
                         <TableCell>{campaign.description}</TableCell>
                         <TableCell>{campaign.endDate}</TableCell>
                         <TableCell>{campaign.user.username}</TableCell>
-                        <TableCell>                       
-                        <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}} onClick={transactionOn}>Donate</Button>
+                        <TableCell>    
+                        {
+                            props.role === 'donor'
+                                ? <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}} onClick={transactionOn}>Donate</Button>
+                                : null
+                        }                                           
                         </TableCell>
                         {
                             /* bug is that this only grabs the last campaign's id instead of the targeted one :/ */

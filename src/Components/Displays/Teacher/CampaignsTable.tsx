@@ -23,7 +23,7 @@ interface ICampaign {
     id: number;
 }
 
-const DisplayResults =  (props: IProps) => {
+const CampaignsTable =  (props: IProps) => {
     //functional component here, mapper to pull campaigns, and delete functionality here
     const deleteCampaign = (campaign: ICampaign) => {
         fetch(`${props.baseURL}/campaigns/${campaign.id}`, {
@@ -76,4 +76,4 @@ const DisplayResults =  (props: IProps) => {
     )
 }
 
-export default DisplayResults;
+export default CampaignsTable;

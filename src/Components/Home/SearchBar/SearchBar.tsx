@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import SearchDisplay from './SearchDisplay';
 import TransactionCreate from './TransactionCreate';
+import APIURL from '../../../helpers/environment';
 
 interface IProps {
     sessionToken: string;
@@ -62,7 +63,7 @@ export default class SearchBar extends React.Component<IProps, IState> {
 
 
     fetchAllCampaigns(): void{
-        let newURL = `https://ck-teachers-aid-server.herokuapp.com/campaigns/allCampaigns`;
+        let newURL = `${APIURL}/campaigns/allCampaigns`;
 
         fetch(newURL, {
             method: 'GET',

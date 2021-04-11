@@ -5,6 +5,7 @@ import {
     FormGroup, Button, FormLabel
 } from '@material-ui/core';
 import SearchDisplay from './SearchDisplay';
+import APIURL from '../../../helpers/environment';
 
 interface IProps {
     sessionToken: string;
@@ -45,7 +46,7 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
     fetchTransactions(e: React.SyntheticEvent): void{
         e.preventDefault();
 
-        let newURL = `https://ck-teachers-aid-server.herokuapp.com/transactions/transaction`;
+        let newURL = `${APIURL}/transactions/transaction`;
 
         fetch(newURL, {
             method: 'POST',

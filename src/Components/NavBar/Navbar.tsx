@@ -13,6 +13,7 @@ import {Grid, Button} from '@material-ui/core';
 import CampaignsIndex from '../Displays/Teacher/CampaignsIndex';
 import TransactionsIndex from '../Displays/Donor/TransactionsIndex';
 import logo from '../../Assets/teachersaid.png';
+import APIURL from '../../helpers/environment';
 
 interface IProps {
     sessionToken: string;
@@ -52,7 +53,7 @@ export default class Navbar extends React.Component<IProps> {
                         }
                         </Grid>
                         <Grid item xs={3} style={{marginBottom: '4em'}} justify='flex-end'>      
-                            <Auth baseURL={'https://ck-teachers-aid-server.herokuapp.com'} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken} updateRole={this.props.updateRole}/>
+                            <Auth baseURL={APIURL} sessionToken={this.props.sessionToken}  clearToken={this.props.clearToken} updateToken={this.props.updateToken} updateRole={this.props.updateRole}/>
                         </Grid>
                     </Grid>
                     <div>
@@ -60,12 +61,12 @@ export default class Navbar extends React.Component<IProps> {
                             <Route exact path='/'><Home sessionToken={this.props.sessionToken} role={this.props.role}/></Route>
                             {
                                 this.props.role === 'teacher'
-                                    ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
+                                    ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/></Route>
                                     : null
                             }
                             {
                                 this.props.role === 'donor'
-                                    ?  <Route exact path='/transactions'><TransactionsIndex sessionToken={this.props.sessionToken} baseURL={'https://ck-teachers-aid-server.herokuapp.com'}/></Route>
+                                    ?  <Route exact path='/transactions'><TransactionsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/></Route>
                                     : null
                             }
                         </Switch>

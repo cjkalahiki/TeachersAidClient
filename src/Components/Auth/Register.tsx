@@ -101,6 +101,7 @@ export default class Register extends React.Component<IProps, IState> {
                         console.log(data)
                         alert(data.message);
                         this.props.updateToken(data.sessionToken);
+                        this.props.updateRole(data.user.role);
                         this.handleOpen();
                     })
             }

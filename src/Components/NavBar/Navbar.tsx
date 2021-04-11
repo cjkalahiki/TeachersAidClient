@@ -5,7 +5,8 @@ import {
     Switch
 } from 'react-router-dom';
 import {
-    BrowserRouter as Router,
+    BrowserRouter as Router, 
+    Redirect
   } from 'react-router-dom';
 import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
@@ -59,16 +60,20 @@ export default class Navbar extends React.Component<IProps> {
                     <div>
                         <Switch>
                             <Route exact path='/'><Home sessionToken={this.props.sessionToken} role={this.props.role}/></Route>
-                            {
-                                this.props.role === 'teacher'
-                                    ?  <Route exact path='/campaigns'><CampaignsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/></Route>
-                                    : null
-                            }
-                            {
-                                this.props.role === 'donor'
-                                    ?  <Route exact path='/transactions'><TransactionsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/></Route>
-                                    : null
-                            }
+                            <Route exact path='/campaigns'>
+                                {
+                                    this.props.role !== 'teacher'
+                                        ? <Redirect to='/'/>
+                                        : <CampaignsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/>
+                                }
+                            </Route>
+                            <Route exact path='/transactions'>
+                                {
+                                    this.props.role !== 'donor'
+                                        ? <Redirect to='/'/>
+                                        : <TransactionsIndex sessionToken={this.props.sessionToken} baseURL={APIURL}/>
+                                }
+                            </Route>
                         </Switch>
                     </div>
                 </Router>

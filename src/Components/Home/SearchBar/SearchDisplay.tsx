@@ -3,7 +3,9 @@ import {
     Table, TableContainer,
     TableHead, TableRow,
     TableCell, TableBody,
-    Button, TextField, Grid
+    Button, TextField, Grid,
+    Dialog, DialogTitle,
+    FormGroup, FormLabel
 } from '@material-ui/core';
 import TransactionCreate from './TransactionCreate';
 
@@ -11,10 +13,11 @@ interface IProps {
     campaigns: ICampaign[];
     role: string;
     sessionToken: string;
+    campaignTransactioner(campaign: ICampaign) : void;
+    transactionOn(): void;
 }
 
 interface ICampaign {
-    // includes(arg0: string): any;
     title: string;
     amount: number;
     description: string;
@@ -33,9 +36,6 @@ const SearchDisplay =  (props: IProps) => {
             inside this modal, a check for role === 'donor' to connect to /transactions/transaction to make the transaction
     */
     const [searchTerm, setSearchTerm] = useState('');
-    const [transactionActive, setTransactionActive] = useState(false);
-
-    //TODO: to pass down the 
 
     const campaignMapper = () => {
         console.log(props.campaigns);
@@ -51,29 +51,15 @@ const SearchDisplay =  (props: IProps) => {
                         <TableCell>    
                         {
                             props.role === 'donor'
-                                ? <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}} onClick={transactionOn}>Donate</Button>
+                                ? <Button style={{marginTop: '1em', backgroundColor: '#0B949A', color:'white'}}
+                                onClick={() => {props.campaignTransactioner(campaign); props.transactionOn()}}>Donate</Button>
                                 : null
                         }                                           
                         </TableCell>
-                        {
-                            /* bug is that this only grabs the last campaign's id instead of the targeted one :/ */
-                            transactionActive 
-                                ? <TransactionCreate sessionToken={props.sessionToken} transactionOff={transactionOff} campaignID={campaign.id}/>
-                                : null
-                        }
                     </TableRow>
                 )
             })
         }
-    }
-
-    const transactionOn = () => {
-        console.log('clicked')
-        setTransactionActive(true);
-    }
-    
-    const transactionOff = () => {
-        setTransactionActive(false);
     }
 
     return(

@@ -9,11 +9,24 @@ import SearchDisplay from './SearchDisplay';
 interface IProps {
     sessionToken: string;
     transactionOff(): void;
-    campaignID: number;
+    campaignTransaction: ICampaign;
 }
 
 interface IState {
     amount: number;
+}
+
+interface ICampaign {
+    title: string;
+    amount: number;
+    description: string;
+    endDate: string;
+    id: number;
+    user: IUser;
+}
+
+interface IUser {
+    username: string
 }
 
 export default class TransactionCreate extends React.Component<IProps, IState> {
@@ -36,7 +49,7 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
 
         fetch(newURL, {
             method: 'POST',
-            body: JSON.stringify({transaction: {amount: this.state.amount, campaignId: this.props.campaignID}}),
+            body: JSON.stringify({transaction: {amount: this.state.amount, campaignId: this.props.campaignTransaction.id}}),
             headers: new Headers ({
                 'Content-Type': 'application/json',
                 'Authorization': this.props.sessionToken
@@ -45,6 +58,7 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data.message);
+                alert(data.message);
                 this.props.transactionOff();
             })
     }
@@ -60,12 +74,13 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
     }
 
     render() {
+        const {campaignTransaction} = this.props;
         return(
             <Dialog open={true}>
                 <DialogTitle style={{textAlign: 'center'}}>Make a Donation!</DialogTitle>
                 <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
-                <FormGroup>
-                        <FormLabel>Amount</FormLabel>
+                    <FormGroup>
+                        <FormLabel>Amount + {campaignTransaction.id}</FormLabel>
                         <br/>
                         <TextField label='Amount' variant='filled' value={this.state.amount} name='amount' onChange={this.inputCompiler} type='number' id="standard-adornment-amount"></TextField>
                     </FormGroup>

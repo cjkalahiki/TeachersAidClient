@@ -4,6 +4,7 @@ import {
     TextField
 } from '@material-ui/core';
 import SearchDisplay from './SearchDisplay';
+import TransactionCreate from './TransactionCreate';
 
 interface IProps {
     sessionToken: string;
@@ -12,10 +13,11 @@ interface IProps {
 
 interface IState {
     campaigns: ICampaign[];
+    campaignTransaction: ICampaign;
+    transactionActive: boolean;
 }
 
 interface ICampaign {
-    // includes(arg0: string): any;
     title: string;
     amount: number;
     description: string;
@@ -33,10 +35,29 @@ export default class SearchBar extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            campaigns: []
+            campaigns: [],
+            campaignTransaction: {
+                title: '',
+                amount: NaN,
+                description: '',
+                endDate: '',
+                id: NaN,
+                user: {
+                    username: ''
+                }
+            },
+            transactionActive: false
         }
         this.fetchAllCampaigns = this.fetchAllCampaigns.bind(this);
+        this.campaignTransactioner = this.campaignTransactioner.bind(this);
+        this.transactionOn = this.transactionOn.bind(this);
+        this.transactionOff = this.transactionOff.bind(this);
+    }
 
+    campaignTransactioner(campaign: ICampaign): void{
+        this.setState({
+            campaignTransaction: campaign
+        })
     }
 
 
@@ -61,6 +82,19 @@ export default class SearchBar extends React.Component<IProps, IState> {
     componentDidMount(){
         this.fetchAllCampaigns();
     }
+
+    transactionOn(): void {
+        console.log('clicked')
+        this.setState({
+            transactionActive: true
+        })
+    }
+    
+    transactionOff(): void {
+        this.setState({
+            transactionActive: false
+        })
+    }
     
 
     render() {
@@ -69,9 +103,14 @@ export default class SearchBar extends React.Component<IProps, IState> {
                <Grid container>
                    <Grid item xs={12}>
                         <h1>Search for a campaign!</h1>
-                        <SearchDisplay campaigns={this.state.campaigns} role={this.props.role} sessionToken={this.props.sessionToken}/>
+                        <SearchDisplay campaigns={this.state.campaigns} role={this.props.role} sessionToken={this.props.sessionToken} campaignTransactioner={this.campaignTransactioner} transactionOn={this.transactionOn}/>
                    </Grid>
                </Grid>
+               {
+                    this.state.transactionActive 
+                        ? <TransactionCreate sessionToken={this.props.sessionToken} transactionOff={this.transactionOff} campaignTransaction={this.state.campaignTransaction}/>
+                        : null
+                }
             </div>
         )
     }

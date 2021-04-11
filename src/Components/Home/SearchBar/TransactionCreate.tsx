@@ -80,7 +80,7 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
                 <DialogTitle style={{textAlign: 'center'}}>Make a Donation!</DialogTitle>
                 <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup>
-                        <FormLabel>Amount + {campaignTransaction.id}</FormLabel>
+                        <FormLabel>Amount</FormLabel>
                         <br/>
                         <TextField label='Amount' variant='filled' value={this.state.amount} name='amount' onChange={this.inputCompiler} type='number' id="standard-adornment-amount"></TextField>
                     </FormGroup>

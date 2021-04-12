@@ -144,7 +144,7 @@ export default class Register extends React.Component<IProps, IState> {
                         <TextField id='outlined-basic' label='Username' variant='filled' value={this.state.username} name='username' onChange={this.inputCompiler} required>Username: </TextField>
                     </FormGroup>
                     <FormGroup>
-                        <TextField id='outlined-basic' label='Password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler} required type="password">Password: </TextField>
+                        <TextField id='outlined-basic' label='Password' variant='filled' value={this.state.password} name='password' onChange={this.inputCompiler} required>Password: </TextField>
                     </FormGroup>
                     <br/>
                     <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Sign up</Button>

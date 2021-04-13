@@ -15,6 +15,7 @@ interface IProps {
     updateToken(newToken: string) : string;
     clearToken() : void;
     updateRole(newRole : string) : string;
+    signupOff(): void;
     open: boolean;
 }
 
@@ -59,7 +60,7 @@ export default class Register extends React.Component<IProps, IState> {
         })
     }
 
-    loginFetch(e: SyntheticEvent){
+    loginFetch = async (e: SyntheticEvent) => {
         e.preventDefault();
         if(this.state.password === ''){
             alert('You must input your password');
@@ -73,21 +74,27 @@ export default class Register extends React.Component<IProps, IState> {
             let newURL = `${this.props.baseURL}/users/register`;
 
             if (this.state.teacher === true) {
-                fetch(newURL, {
-                    method: 'POST',
-                    body: JSON.stringify({user: {role: 'teacher', firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, username: this.state.username, password: this.state.password}}),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
+                try{
+                    await fetch(newURL, {
+                        method: 'POST',
+                        body: JSON.stringify({user: {role: 'teacher', firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, username: this.state.username, password: this.state.password}}),
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        })
                     })
-                })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        console.log(data)
-                        alert(data.message);
-                        this.props.updateToken(data.sessionToken);
-                        this.props.updateRole(data.user.role);
-                        this.handleOpen();
-                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log(data)
+                            if (data.message){
+                                alert(data.message);
+                            }
+                            this.props.updateToken(data.sessionToken);
+                            this.props.updateRole(data.user.role);
+                            this.props.signupOff();
+                        })
+                } catch (err) {
+                    alert('failed to register user');
+                }
             } else {
                 fetch(newURL, {
                     method: 'POST',
@@ -99,10 +106,12 @@ export default class Register extends React.Component<IProps, IState> {
                     .then((res) => res.json())
                     .then((data) => {
                         console.log(data)
-                        alert(data.message);
+                        if (data.message){
+                            alert(data.message);
+                        }
                         this.props.updateToken(data.sessionToken);
                         this.props.updateRole(data.user.role);
-                        this.handleOpen();
+                        this.props.signupOff();
                     })
             }
         }
@@ -124,7 +133,7 @@ export default class Register extends React.Component<IProps, IState> {
 
     render(){
         return (
-            <Dialog open={this.state.open} onClose={this.handleClose}>
+            <Dialog open={true}>
                 <DialogTitle style={{textAlign: 'center'}}>Sign up</DialogTitle>
                 <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup row>
@@ -148,6 +157,7 @@ export default class Register extends React.Component<IProps, IState> {
                     </FormGroup>
                     <br/>
                     <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Sign up</Button>
+                    <Button variant='contained' onClick={this.props.signupOff} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24', marginLeft: '2em'}}>Cancel</Button>
                 </form>
             </Dialog>
         )

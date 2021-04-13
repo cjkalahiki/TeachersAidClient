@@ -33,20 +33,34 @@ export default class Auth extends React.Component<IProps, IState> {
             signUp: false,
             login: false
         }
-        this.toggleLogin = this.toggleLogin.bind(this);
-        this.toggleSignup = this.toggleSignup.bind(this);
+        this.loginOn = this.loginOn.bind(this);
+        this.loginOff = this.loginOff.bind(this);
+        this.signupOn = this.signupOn.bind(this);
+        this.signupOff = this.signupOff.bind(this);
     }
 
 
-    toggleLogin() {
+    loginOn(){
         this.setState({
-            login: !this.state.login
+            login: true
         })
     }
 
-    toggleSignup() {
+    loginOff(){
         this.setState({
-            signUp: !this.state.signUp
+            login: false
+        })
+    }
+
+    signupOn() {
+        this.setState({
+            signUp: true
+        })
+    }
+
+    signupOff(){
+        this.setState({
+            signUp: false
         })
     }
 
@@ -63,25 +77,25 @@ export default class Auth extends React.Component<IProps, IState> {
                 {
                     this.state.login === false
                         ? null
-                        : <Login sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.login} updateRole={this.props.updateRole}/>
+                        : <Login sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.login} updateRole={this.props.updateRole} loginOff={this.loginOff}/>
                 }
                 { /* if user has not clicked on button, modal will not display */
                     this.state.signUp === false 
                         ? null 
-                        : <Register sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.signUp} updateRole={this.props.updateRole}/>
+                        : <Register sessionToken={this.props.sessionToken} baseURL={this.props.baseURL} updateToken={this.props.updateToken} clearToken={this.props.clearToken} open={this.state.signUp} updateRole={this.props.updateRole} signupOff={this.signupOff}/>
                 }
                 {
-                    this.props.sessionToken === ''
-                        ? <Button variant='contained' style={{marginRight: '2em', backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.toggleLogin}>Log in</Button>
+                    (this.props.sessionToken === '' || this.props.sessionToken === 'undefined')
+                        ? <Button variant='contained' style={{marginRight: '2em', backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.loginOn}>Log in</Button>
                         : null
                 }
                 {
-                    this.props.sessionToken === ''
-                        ? <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.toggleSignup}>Sign up</Button>
+                    (this.props.sessionToken === '' || this.props.sessionToken === 'undefined')
+                        ? <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '15pt'}} onClick={this.signupOn}>Sign up</Button>
                         : null
                 }
                 {
-                    this.props.sessionToken !== ''
+                    (this.props.sessionToken !== '' && this.props.sessionToken !== 'undefined')
                         ? <Logout clearToken={this.props.clearToken}/>
                         : null
                 }

@@ -39,6 +39,7 @@ const SearchDisplay =  (props: IProps) => {
 
     const campaignMapper = () => {
         console.log(props.campaigns);
+        
         if (props.campaigns !== []) {
             return props.campaigns.filter((campaign: ICampaign) => campaign.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())).map((campaign: ICampaign, index: number) => {
                 return(

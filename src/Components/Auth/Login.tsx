@@ -16,6 +16,7 @@ interface IProps {
     updateToken(newToken: string) : string; 
     clearToken() : void;
     updateRole(newRole: string) : string;
+    loginOff(): void;
     open: boolean;
 }
 
@@ -51,8 +52,9 @@ export default class Login extends React.Component<IProps, IState> {
         })
     }
 
-    loginFetch(e: SyntheticEvent){
+    loginFetch = async (e: SyntheticEvent) => {
         e.preventDefault();
+
         if(this.state.password === ''){
             alert('You must input your password');
         } else if (this.state.username.length < 1){
@@ -61,22 +63,27 @@ export default class Login extends React.Component<IProps, IState> {
             this.props.clearToken();
 
             let newURL = `${this.props.baseURL}/users/login`;
-
-            fetch(newURL, {
-                method: 'POST',
-                body: JSON.stringify({user: {username: this.state.username, password: this.state.password}}),
-                headers: new Headers({
-                    'Content-Type': 'application/json'
+            try {
+                await fetch(newURL, {
+                    method: 'POST',
+                    body: JSON.stringify({user: {username: this.state.username, password: this.state.password}}),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
                 })
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data)
-                    alert(data.message);
-                    this.props.updateToken(data.sessionToken);
-                    this.props.updateRole(data.user.role);
-                    this.handleOpen();
-                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data)
+                        if (data.message){
+                            alert(data.message);
+                        }
+                        this.props.updateToken(data.sessionToken);
+                        this.props.updateRole(data.user.role);
+                        this.props.loginOff();
+                    })
+            } catch (err) {
+                alert('failed to login user');
+            }
         }
 
     }
@@ -93,7 +100,7 @@ export default class Login extends React.Component<IProps, IState> {
 
     render(){
         return (
-            <Dialog open={this.state.open} onClose={this.handleClose}>
+            <Dialog open={true}>
                 <DialogTitle style={{textAlign: 'center'}}>Login</DialogTitle>
                 <form onSubmit={this.handleSubmit} style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup>
@@ -104,6 +111,7 @@ export default class Login extends React.Component<IProps, IState> {
                     </FormGroup>
                     <br/>
                     <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24'}}>Log in</Button>
+                    <Button variant='contained' onClick={this.props.loginOff} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24', marginLeft: '2em'}}>Cancel</Button>
                 </form>
             </Dialog>
         )

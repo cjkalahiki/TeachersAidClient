@@ -38,31 +38,39 @@ export default class CampaignsCreate extends React.Component<IProps, IState>{
         this.setState((prevState: IState) => ({...prevState, [input.name]: input.value} as Pick<IState, keyof IState>));
     }
 
-    campaignsFetch(e: React.SyntheticEvent){
+    campaignsFetch = async(e: React.SyntheticEvent) => {
         e.preventDefault();
 
         let newURL = `${this.props.baseURL}/campaigns/campaign`;
 
-        fetch(newURL, {
-            method: 'POST',
-            body: JSON.stringify({campaign: {title: this.state.title, amount: this.state.amount, description: this.state.description, endDate: this.state.endDate}}),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': this.props.sessionToken
-            })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-                alert(data.message);
-                this.setState({
-                    title: '',
-                    amount: NaN,
-                    description: '',
-                    endDate: ''
+        if (Date.parse(this.state.todaysDate) >= Date.parse(this.state.endDate)){
+            alert('Campaign needs to run for at least 1 day.')
+        } else {
+            try{
+                await fetch(newURL, {
+                    method: 'POST',
+                    body: JSON.stringify({campaign: {title: this.state.title, amount: this.state.amount, description: this.state.description, endDate: this.state.endDate}}),
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                        'Authorization': this.props.sessionToken
+                    })
                 })
-                this.props.fetchCampaigns();
-            })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data)
+                        alert(data.message);
+                        this.setState({
+                            title: '',
+                            amount: NaN,
+                            description: '',
+                            endDate: ''
+                        })
+                        this.props.fetchCampaigns();
+                    })
+            } catch (err) {
+                alert('Failed to create campaign.')
+            }
+        }
     }
 
     handleSubmit(e: React.SyntheticEvent){

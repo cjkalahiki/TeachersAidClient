@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import TransactionsTable from './TransactionsTable';
 import TransactionsEdit from './TransactionsEdit';
+import {ITransaction} from '../../interfaces';
 
 interface IProps {
     sessionToken: string;
@@ -14,12 +15,6 @@ interface IState {
     transactions: ITransaction[];
     transactionToUpdate: ITransaction;
     updateActive: boolean
-}
-
-interface ITransaction {
-    amount: number;
-    id: number;
-    campaignId: number;
 }
 
 export default class TransactionsIndex extends React.Component<IProps, IState> {

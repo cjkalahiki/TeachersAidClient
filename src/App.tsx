@@ -63,12 +63,10 @@ export default class App extends React.Component<IProps,IState> {
 
   clearToken = () => {
     localStorage.clear();
-    console.log('local storage', localStorage.getItem('token'));
     this.setState({
       sessionToken: '',
       role: ''
     })
-    console.log('after clear token:', this.state.sessionToken);
   }
 
   render() {

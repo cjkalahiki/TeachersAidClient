@@ -5,6 +5,7 @@ import {
     TableCell, TableBody,
     Button
 } from '@material-ui/core';
+import {ITransaction} from '../../interfaces';
 
 interface IProps {
     transactions: ITransaction[];
@@ -13,12 +14,6 @@ interface IProps {
     baseURL: string;
     sessionToken: string;
     fetchTransactions(): void;
-}
-
-interface ITransaction {
-    amount: number;
-    id: number;
-    campaignId: number;
 }
 
 const TransactionsTable =  (props: IProps) => {

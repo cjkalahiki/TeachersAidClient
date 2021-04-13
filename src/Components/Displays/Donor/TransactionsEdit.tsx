@@ -4,6 +4,7 @@ import {
     TextField, DialogTitle,
     FormLabel, Button
 } from '@material-ui/core';
+import {ITransaction} from '../../interfaces';
 
 interface IProps{
     updateOff(): void;
@@ -17,18 +18,13 @@ interface IState{
     amount: number;
 }
 
-interface ITransaction {
-    amount: number;
-    id: number;
-    campaignId: number;
-}
-
 export default class TransactionsEdit extends React.Component<IProps, IState>{
     constructor(props: IProps){
         super(props);
         this.state = {
-            amount: NaN
+            amount: this.props.transactionToUpdate.amount
         }
+
         this.inputCompiler = this.inputCompiler.bind(this);
         this.transactionUpdate = this.transactionUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -65,7 +61,7 @@ export default class TransactionsEdit extends React.Component<IProps, IState>{
         return(
             <Dialog open={true}>
                 <DialogTitle style={{textAlign: 'center'}}>Edit Your Transaction</DialogTitle>
-                <form style={{padding: "2em", width: '35vw', textAlign: 'center'}}>
+                <form style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                     <FormGroup>
                         <TextField label='Amount' variant='filled' value={this.state.amount} name='amount' onChange={this.inputCompiler} type='number' id="standard-adornment-amount"></TextField>
                     </FormGroup>

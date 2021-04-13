@@ -1,33 +1,19 @@
 import React from 'react';
 import {
-    Grid, Container, Paper,
     TextField, Dialog, DialogTitle,
     FormGroup, Button, FormLabel
 } from '@material-ui/core';
-import SearchDisplay from './SearchDisplay';
 import APIURL from '../../../helpers/environment';
+import {ICampaignTransaction} from '../../interfaces';
 
 interface IProps {
     sessionToken: string;
     transactionOff(): void;
-    campaignTransaction: ICampaign;
+    campaignTransaction: ICampaignTransaction;
 }
 
 interface IState {
     amount: number;
-}
-
-interface ICampaign {
-    title: string;
-    amount: number;
-    description: string;
-    endDate: string;
-    id: number;
-    user: IUser;
-}
-
-interface IUser {
-    username: string
 }
 
 export default class TransactionCreate extends React.Component<IProps, IState> {
@@ -37,31 +23,42 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
         this.state = {
             amount: NaN
         }
+        
         this.fetchTransactions = this.fetchTransactions.bind(this);
         this.inputCompiler = this.inputCompiler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
 
-    fetchTransactions(e: React.SyntheticEvent): void{
+    fetchTransactions = async(e: React.SyntheticEvent) => {
         e.preventDefault();
 
         let newURL = `${APIURL}/transactions/transaction`;
 
-        fetch(newURL, {
-            method: 'POST',
-            body: JSON.stringify({transaction: {amount: this.state.amount, campaignId: this.props.campaignTransaction.id}}),
-            headers: new Headers ({
-                'Content-Type': 'application/json',
-                'Authorization': this.props.sessionToken
-            })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data.message);
-                alert(data.message);
-                this.props.transactionOff();
-            })
+        if (this.state.amount > this.props.campaignTransaction.amount) {
+            alert('Cannot donate more than the needed amount.')
+        } else if (this.state.amount < 0){
+            alert('Need to input a valid amount')
+        } else {
+            try{
+                await fetch(newURL, {
+                    method: 'POST',
+                    body: JSON.stringify({transaction: {amount: this.state.amount, campaignId: this.props.campaignTransaction.id}}),
+                    headers: new Headers ({
+                        'Content-Type': 'application/json',
+                        'Authorization': this.props.sessionToken
+                    })
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data.message);
+                        alert(data.message);
+                        this.props.transactionOff();
+                    })
+            } catch (err){
+                alert('transaction unsuccessful')
+            }
+        }
     }
 
     handleSubmit(e: React.SyntheticEvent){
@@ -83,7 +80,7 @@ export default class TransactionCreate extends React.Component<IProps, IState> {
                     <FormGroup>
                         <FormLabel>Amount</FormLabel>
                         <br/>
-                        <TextField label='Amount' variant='filled' value={this.state.amount} name='amount' onChange={this.inputCompiler} type='number' id="standard-adornment-amount"></TextField>
+                        <TextField label='Amount' variant='filled' value={this.state.amount} name='amount' onChange={this.inputCompiler} type='number' id="standard-adornment-amount" InputProps={{inputProps: {min: 0}}}></TextField>
                     </FormGroup>
                     <br/>
                     <Button variant='contained' onClick={this.handleSubmit} style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', fontSize: '11pt', height: '50px', textDecoration:'underline #E24E24', marginRight: '2em'}}>Donate</Button>

@@ -7,27 +7,14 @@ import {
     Dialog, DialogTitle,
     FormGroup, FormLabel
 } from '@material-ui/core';
-import TransactionCreate from './TransactionCreate';
+import {ICampaignTransaction} from '../../interfaces';
 
 interface IProps {
-    campaigns: ICampaign[];
+    campaigns: ICampaignTransaction[];
     role: string;
     sessionToken: string;
-    campaignTransactioner(campaign: ICampaign) : void;
+    campaignTransactioner(campaign: ICampaignTransaction) : void;
     transactionOn(): void;
-}
-
-interface ICampaign {
-    title: string;
-    amount: number;
-    description: string;
-    endDate: string;
-    id: number;
-    user: IUser;
-}
-
-interface IUser {
-    username: string
 }
 
 const SearchDisplay =  (props: IProps) => {
@@ -41,7 +28,7 @@ const SearchDisplay =  (props: IProps) => {
         console.log(props.campaigns);
         
         if (props.campaigns !== []) {
-            return props.campaigns.filter((campaign: ICampaign) => campaign.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())).map((campaign: ICampaign, index: number) => {
+            return props.campaigns.filter((campaign: ICampaignTransaction) => campaign.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())).map((campaign: ICampaignTransaction, index: number) => {
                 return(
                     <TableRow key={index}>
                         <TableCell>{campaign.title}</TableCell>

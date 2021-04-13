@@ -6,6 +6,7 @@ import {
 import SearchDisplay from './SearchDisplay';
 import TransactionCreate from './TransactionCreate';
 import APIURL from '../../../helpers/environment';
+import {ICampaignTransaction} from '../../interfaces';
 
 interface IProps {
     sessionToken: string;
@@ -13,22 +14,9 @@ interface IProps {
 }
 
 interface IState {
-    campaigns: ICampaign[];
-    campaignTransaction: ICampaign;
+    campaigns: ICampaignTransaction[];
+    campaignTransaction: ICampaignTransaction;
     transactionActive: boolean;
-}
-
-interface ICampaign {
-    title: string;
-    amount: number;
-    description: string;
-    endDate: string;
-    id: number;
-    user: IUser;
-}
-
-interface IUser {
-    username: string
 }
 
 export default class SearchBar extends React.Component<IProps, IState> {
@@ -55,7 +43,7 @@ export default class SearchBar extends React.Component<IProps, IState> {
         this.transactionOff = this.transactionOff.bind(this);
     }
 
-    campaignTransactioner(campaign: ICampaign): void{
+    campaignTransactioner(campaign: ICampaignTransaction): void{
         this.setState({
             campaignTransaction: campaign
         })

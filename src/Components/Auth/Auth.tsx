@@ -2,16 +2,7 @@ import React from 'react';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
-import { 
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Button,
-    FormGroup,
-    TextField
-} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 interface IProps {
     baseURL: string;

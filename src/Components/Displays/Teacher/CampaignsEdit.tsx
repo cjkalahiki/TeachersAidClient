@@ -4,6 +4,7 @@ import {
     TextField, DialogTitle,
     FormLabel, Button
 } from '@material-ui/core';
+import {ICampaign} from '../../interfaces';
 
 interface IProps{
     updateOff(): void;
@@ -16,47 +17,50 @@ interface IProps{
 interface IState{
     description: string;
     amount: number;
-    endDate: '';
-    title: string;
-}
-
-interface ICampaign {
-    title: string;
-    amount: number;
-    description: string;
     endDate: string;
-    id: number;
+    title: string;
+    todaysDate: string;
 }
 
 export default class CampaignsEdit extends React.Component<IProps, IState>{
     constructor(props: IProps){
         super(props);
         this.state = {
-            description: '',
-            amount: NaN,
-            endDate: '',
-            title: ''
+            description: this.props.campaignToUpdate.description,
+            amount: this.props.campaignToUpdate.amount,
+            endDate: this.props.campaignToUpdate.endDate,
+            title: this.props.campaignToUpdate.title,
+            todaysDate: ''
         }
         this.inputCompiler = this.inputCompiler.bind(this);
         this.campaignUpdate = this.campaignUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    campaignUpdate(e: React.SyntheticEvent){
+    campaignUpdate = async(e: React.SyntheticEvent) => {
         e.preventDefault();
-        fetch(`${this.props.baseURL}/campaigns/${this.props.campaignToUpdate.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({campaign: {title: this.state.title, description: this.state.description, amount: this.state.amount, endDate: this.state.endDate}}),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': this.props.sessionToken
-            })
-        })
-        .then((res) => {
-            this.props.fetchCampaigns();
-            this.props.updateOff();
-            alert('Campaign successfully updated');
-        })
+
+        if (Date.parse(this.state.todaysDate) >= Date.parse(this.state.endDate)){
+            alert('Campaign needs to run for at least 1 day.')
+        } else {
+            try{
+                await fetch(`${this.props.baseURL}/campaigns/${this.props.campaignToUpdate.id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({campaign: {title: this.state.title, description: this.state.description, amount: this.state.amount, endDate: this.state.endDate}}),
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                        'Authorization': this.props.sessionToken
+                    })
+                })
+                .then((res) => {
+                    this.props.fetchCampaigns();
+                    this.props.updateOff();
+                    alert('Campaign successfully updated');
+                })
+            } catch (err) {
+                alert('Failed to update campaign.')
+            }
+        }
     }
 
     inputCompiler(e: React.SyntheticEvent){
@@ -69,11 +73,19 @@ export default class CampaignsEdit extends React.Component<IProps, IState>{
         this.campaignUpdate(e);
     }
 
+    componentDidMount(){
+        let today : string= new Date().toLocaleDateString();
+        console.log(today);
+        this.setState({
+            todaysDate: today
+        })
+    }
+
     render(){
         return(
             <Dialog open={true}>
                 <DialogTitle style={{textAlign: 'center'}}>Edit Your Campaign</DialogTitle>
-                <form style={{padding: "2em", width: '35vw', textAlign: 'center'}}>
+                <form style={{padding: "2em", width: '25vw', textAlign: 'center'}}>
                 <FormGroup>
                         <TextField variant='filled' value={this.state.title} name='title' label='Title' onChange={this.inputCompiler} type='text' id="standard-adornment-amount"></TextField>
                     </FormGroup>
@@ -88,6 +100,7 @@ export default class CampaignsEdit extends React.Component<IProps, IState>{
                     </FormGroup>
                     <br/>
                     <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px'}} onClick={this.handleSubmit}>Update Campaign</Button>
+                    <Button variant='contained' style={{backgroundColor: '#E24E42', color:'white', borderRadius: '25px', marginLeft: '2em'}} onClick={this.props.updateOff}>Cancel</Button>
                 </form>
             </Dialog>
         )

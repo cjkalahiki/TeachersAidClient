@@ -5,6 +5,7 @@ import {
 import CampaignsTable from './CampaignsTable';
 import CampaignsCreate from './CampaignsCreate';
 import CampaignsEdit from './CampaignsEdit';
+import {ICampaign} from '../../interfaces';
 
 interface IProps {
     sessionToken: string;
@@ -15,14 +16,6 @@ interface IState {
     campaigns: ICampaign[];
     campaignToUpdate: ICampaign;
     updateActive: boolean
-}
-
-interface ICampaign {
-    title: string;
-    amount: number;
-    description: string;
-    endDate: string;
-    id: number;
 }
 
 export default class CampaignsIndex extends React.Component<IProps, IState> {

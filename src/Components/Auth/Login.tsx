@@ -1,9 +1,6 @@
 import React, { SyntheticEvent } from 'react';
 import { 
     Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
     DialogTitle,
     Button,
     FormGroup,
